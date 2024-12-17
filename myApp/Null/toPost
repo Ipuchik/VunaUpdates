@@ -1,0 +1,23 @@
+In general, it is recommended to have a single database for comments and associate each comment with the corresponding post using a foreign key or some other identifier. This approach allows for better data organization and querying.
+
+When a user navigates to the comments page for a specific post, you would retrieve the comments associated with that post from the database using the post's identifier. This way, you can display the comments relevant to that specific post on the comments page.
+
+Here's a high-level overview of how you can structure the comments functionality:
+
+1. Database Structure:
+
+   - Create a table for posts, including a unique identifier for each post (e.g., `post_id`).
+   - Create a table for comments, including a unique identifier for each comment (e.g., `comment_id`), a foreign key referencing the `post_id` it belongs to, and other columns such as the comment content, user information, etc.
+
+2. Fetching Comments:
+
+   - When a user taps on a post and navigates to the comments page, pass the `post_id` as a parameter to the comments page.
+   - In the comments page component, retrieve the comments associated with the given `post_id` from the database using a query. The exact query will depend on the database technology you are using (e.g., SQL, NoSQL, etc.).
+   - Display the comments retrieved from the database on the comments page.
+
+3. Adding Comments:
+   - Implement a form or input field on the comments page to allow users to enter new comments.
+   - When a user submits a new comment, insert the comment into the comments table in the database. Ensure to associate it with the appropriate `post_id`.
+   - Optionally, you can update the comments list immediately after a comment is added to show the new comment without having to refresh the page.
+
+By following this approach, you maintain a single database for comments but associate each comment with the relevant post using the foreign key. This allows for efficient querying and retrieval of comments for a specific post on the comments page.

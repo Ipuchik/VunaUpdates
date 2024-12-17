@@ -1,0 +1,192 @@
+import React, { useState, useEffect, useRef } from "react";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+  KeyboardAvoidingView,
+  Platform,
+  PanResponder,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import { useRoute } from "@react-navigation/native";
+
+export default function Comment({ route }) {
+  const inputRef = useRef(null);
+  const scrollViewRef = useRef(null);
+  const [post, setPost] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [post_id, setPostID] = useState(route.params?.selectedPost?.id || "");
+  const [refreshing, setRefreshing] = useState(false);
+  const [Tposts, setTposts] = useState(route.params?.selectedPost || {});
+
+  const submit = () => {
+    if (!post) {
+      console.log("Please enter a comment before submitting.");
+      return;
+    }
+
+    // Code for submitting the comment
+  };
+
+  const fetchPosts = () => {
+    // Code for fetching comments/posts
+  };
+
+  const handleRefresh = () => {
+    // Code for refreshing the comments/posts
+  };
+
+  useEffect(() => {
+    // Code for initial data fetching and interval updates
+  }, []);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderRelease: () => {
+        console.log("Sliding gesture released");
+      },
+    })
+  ).current;
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+        <ImageBackground
+          source={require("../assets/first2.png")}
+          style={styles.backgroundImage}
+        >
+          <View>
+            <View style={styles.headContainer} key={Tposts.id}>
+              <Text style={styles.postText}>{Tposts.post}</Text>
+            </View>
+          </View>
+
+          <View style={styles.commentsContainer}>
+            {posts.map((post) => (
+              <View
+                style={styles.postContainer}
+                key={post.id}
+                {...panResponder.panHandlers}
+              >
+                <Text style={styles.commentText}>{post.post}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.input}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+              <TouchableOpacity onPress={submit}>
+                <Icon
+                  name="send"
+                  size={25}
+                  color="#C48DC6"
+                  style={styles.icons}
+                />
+              </TouchableOpacity>
+              <TextInput
+                style={styles.TextInput}
+                multiline={true}
+                onChangeText={setPost}
+                ref={inputRef}
+              />
+            </KeyboardAvoidingView>
+          </View>
+          <View style={{ marginBottom: 10 }} />
+          <View style={styles.contentFiller} />
+        </ImageBackground>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  postText: {
+    fontSize: 22,
+    alignSelf: "center",
+    marginVertical: 0,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: -5,
+  },
+  contentFiller: {
+    flex: 1,
+  },
+  postContainer: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    marginVertical: 10,
+    padding: 20,
+    borderRadius: 10,
+  },
+  commentText: {
+    fontSize: 16,
+    color: "#333333",
+  },
+  firstPostContainer: {
+    marginTop: -200,
+  },
+  commentsContainer: {
+    paddingTop: 20,
+  },
+  TextInput: {
+    backgroundColor: "white",
+    width: "80%",
+    alignSelf: "center",
+    height: 40,
+    paddingLeft: 10,
+    paddingRight: 35,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    paddingTop: 10,
+  },
+  icons: {
+    position: "absolute",
+    alignSelf: "center",
+    marginTop: 10,
+    marginLeft: 240,
+  },
+  input: {
+    marginTop: 60,
+  },
+  headContainer: {
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginBottom: 5,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
+    borderRadius: 20,
+    marginTop: 30,
+  },
+  username: {
+    fontSize: 14,
+    paddingTop: 5,
+  },
+});
